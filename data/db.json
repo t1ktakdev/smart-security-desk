@@ -1,0 +1,47 @@
+{
+  "cameras": [
+    {
+      "id": "CAM-01",
+      "name": "Главный вход",
+      "location": "1 этаж, главный холл",
+      "status": "online",
+      "previewUrl": "http://localhost:8888/cam1",
+      "updatedAt": "2026-10-30T06:00:00Z",
+      "demo": true
+    },
+    {
+      "id": "CAM-02",
+      "name": "Учебная лаборатория",
+      "location": "2 этаж, кабинет 204",
+      "status": "offline",
+      "previewUrl": "",
+      "updatedAt": "2026-10-30T06:00:00Z",
+      "demo": true
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "type": "motion",
+      "cameraId": "CAM-01",
+      "severity": "medium",
+      "message": "ДЕМО: обнаружено движение у главного входа",
+      "createdAt": "2026-10-30T06:05:00Z",
+      "demo": true
+    }
+  ],
+  "incidents": [
+    {
+      "id": 1,
+      "title": "ДЕМО: проверка главного входа",
+      "cameraId": "CAM-01",
+      "severity": "medium",
+      "description": "Учебный инцидент для проверки панели оператора",
+      "status": "new",
+      "assignee": null,
+      "createdAt": "2026-10-30T06:06:00Z",
+      "updatedAt": "2026-10-30T06:06:00Z",
+      "demo": true
+    }
+  ]
+}

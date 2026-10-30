@@ -1,0 +1,21 @@
+{
+  "name": "smart-security-desk",
+  "version": "1.0.0",
+  "description": "Учебное MVP для службы безопасности и IT-отдела: камеры CCTV, события IoT, инциденты, фильтры, изменение статусов и локальный preview MediaMTX. Исходные записи JSON являются демонстрационными. Система не предназначена для боевой охраны без аутентификации и защищённого хранилища.",
+  "main": "server.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node --test tests/api.test.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
