@@ -1,0 +1,234 @@
+﻿{
+  "info": {
+    "name": "Smart Security Desk - ТРПП",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "incidentId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "TC-01 health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-01',()=>pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET cameras",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/cameras",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Cameras',()=>pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-02 event valid",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/events",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"motion\",\"cameraId\":\"CAM-01\",\"severity\":\"high\",\"message\":\"Postman demo\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-02',()=>pm.response.to.have.status(201));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-03 event invalid",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/events",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"type\":\"motion\",\"severity\":\"high\",\"message\":\"Postman demo\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-03',()=>pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-04 incident new",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/incidents",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\":\"Postman test incident\",\"cameraId\":\"CAM-01\",\"severity\":\"high\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-04',()=>pm.response.to.have.status(201)); pm.collectionVariables.set('incidentId',pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-05 in progress",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"status\":\"in_progress\",\"assignee\":\"Operator-01\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-05',()=>pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-06 closed invalid",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"status\":\"closed\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-06',()=>pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-07 camera missing",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/cameras/CAM-999",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"status\":\"online\"}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-07',()=>pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC-08 filter new",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/incidents?status=new",
+        "header": []
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('TC-08',()=>pm.expect(pm.response.json().every(i=>i.status==='new')).to.be.true);"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
