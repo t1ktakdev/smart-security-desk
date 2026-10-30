@@ -35,5 +35,3 @@ npm start
 npm test
 
 Открыть http://localhost:3000/api/health. Запуск доступен без видеосистемы, preview будет недоступен при выключенном MediaMTX.
-
-Секреты и огромный node_modules в архив не включать.
