@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark"><meta name="theme-color" content="#0b101a">
+<title>Smart Security Desk | Operator Console</title>
+<link rel="stylesheet" href="/style.css"></head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="brand"><div class="brand-icon">◈</div><div><strong>SMART SECURITY</strong><small>DESK / CONTROL CENTER</small></div></div>
+  <div class="sidebar-label">WORKSPACE</div>
+  <nav aria-label="Основная навигация">
+    <a href="#overview" class="nav-link active">▦ <span>Обзор</span></a>
+    <a href="#cameras" class="nav-link">◉ <span>Камеры</span></a>
+    <a href="#events" class="nav-link">≋ <span>IoT события</span></a>
+    <a href="#incidents" class="nav-link">⚑ <span>Инциденты</span></a>
+  </nav>
+  <div class="side-footer"><div class="pulse"></div> Локальная система <b>DEMO</b><p>Данные учебные. Авторизация и боевой мониторинг не включены.</p></div>
+</aside>
+<div class="workspace">
+<header class="topbar"><div><span class="breadcrumb">OPERATIONS / OVERVIEW</span><h1>Центр безопасности <span class="head-mark">/ 01</span></h1></div><div class="top-actions"><span class="live" id="healthBadge">● Проверка API</span><button id="refreshBtn" class="btn ghost" type="button">↻ Обновить</button></div></header>
+<main>
+<div id="notice" role="status" aria-live="polite" class="notice hidden"></div>
+<section id="overview" class="overview">
+ <div class="section-title"><div><span class="eyebrow">SYSTEM OVERVIEW</span><h2>Показатели системы</h2></div><p id="syncTime">Синхронизация...</p></div>
+ <div class="kpi-grid">
+   <article class="kpi"><span>ВСЕГО КАМЕР</span><strong id="kpiCameras">—</strong><small>Зарегистрировано в системе</small></article>
+   <article class="kpi"><span>КАМЕР ОНЛАЙН</span><strong id="kpiOnline">—</strong><small><i class="green-dot"></i> Доступны для просмотра</small></article>
+   <article class="kpi"><span>АКТИВНЫЕ ИНЦИДЕНТЫ</span><strong id="kpiOpen">—</strong><small>New + In progress</small></article>
+   <article class="kpi"><span>IOT СОБЫТИЯ</span><strong id="kpiEvents">—</strong><small>Записи в журнале</small></article>
+ </div>
+</section>
+<div class="two-col">
+<section id="cameras" class="panel"><div class="panel-head"><div><span class="eyebrow">CCTV NETWORK</span><h2>Камеры наблюдения</h2></div><span class="count" id="cameraCount">0 устройств</span></div><div id="cameraList" class="camera-grid"><p class="empty">Загрузка камер...</p></div></section>
+<section class="panel preview-panel"><div class="panel-head"><div><span class="eyebrow">LIVE PREVIEW</span><h2>CAM-01 / Главный вход</h2></div><span class="chip">MEDIA MTX</span></div><div id="preview" class="preview"><div class="preview-empty">Видеопоток не подключён</div></div><p class="subtle">Просмотр доступен только если MediaMTX запущен локально. Изображение не подменяется макетом.</p></section>
+</div>
+<section id="events" class="panel block"><div class="panel-head"><div><span class="eyebrow">SENSOR TELEMETRY</span><h2>Журнал IoT-событий</h2></div><button id="newEventBtn" type="button" class="btn small ghost">+ Тестовое событие</button></div><div class="table-wrap"><table><thead><tr><th>ДАТА / ВРЕМЯ</th><th>ИСТОЧНИК</th><th>ТИП</th><th>ПРИОРИТЕТ</th><th>СООБЩЕНИЕ</th></tr></thead><tbody id="eventList"><tr><td colspan="5">Загрузка...</td></tr></tbody></table></div></section>
+<section id="incidents" class="panel block"><div class="panel-head"><div><span class="eyebrow">INCIDENT RESPONSE</span><h2>Инциденты</h2></div><button id="newIncidentBtn" type="button" class="btn">+ Создать инцидент</button></div>
+ <div class="filters"><label>Статус <select id="statusFilter"><option value="">Все</option><option value="new">Новый</option><option value="in_progress">В работе</option><option value="resolved">Решён</option></select></label><label>Приоритет <select id="severityFilter"><option value="">Любой</option><option value="low">Низкий</option><option value="medium">Средний</option><option value="high">Высокий</option><option value="critical">Критичный</option></select></label><span id="filteredCount" class="filter-count">0 записей</span></div>
+ <div id="incidentList" class="incidents"><p class="empty">Загрузка...</p></div>
+</section>
+<footer>SMART SECURITY DESK · MVP 1.0 · DEMONSTRATION DATA · ТРПП 2026</footer>
+</main></div></div>
+<dialog id="incidentDialog"><form id="incidentForm" class="form"><div class="dialog-head"><h2>Новый инцидент</h2><button type="button" class="x" data-close="incidentDialog">×</button></div><label>Название <input name="title" maxlength="150" placeholder="Например, Открыта дверь ночью" required></label><label>Камера <select name="cameraId" id="incidentCamera" required></select></label><label>Приоритет <select name="severity"><option value="medium">Средний</option><option value="low">Низкий</option><option value="high">Высокий</option><option value="critical">Критичный</option></select></label><label>Описание <textarea name="description" maxlength="1000" rows="3" placeholder="Дополнительные сведения"></textarea></label><div class="form-actions"><button type="button" class="btn ghost" data-close="incidentDialog">Отмена</button><button type="submit" class="btn">Сохранить</button></div></form></dialog>
+<dialog id="eventDialog"><form id="eventForm" class="form"><div class="dialog-head"><h2>Добавить тестовое IoT-событие</h2><button type="button" class="x" data-close="eventDialog">×</button></div><label>Тип <select name="type"><option value="motion">motion</option><option value="door_open">door_open</option><option value="smoke">smoke</option><option value="camera_offline">camera_offline</option></select></label><label>Камера <select name="cameraId" id="eventCamera"></select></label><label>Приоритет <select name="severity"><option value="medium">Средний</option><option value="low">Низкий</option><option value="high">Высокий</option><option value="critical">Критичный</option></select></label><label>Сообщение <input name="message" maxlength="500" placeholder="Обнаружено движение" required></label><div class="form-actions"><button type="button" class="btn ghost" data-close="eventDialog">Отмена</button><button type="submit" class="btn">Создать</button></div></form></dialog>
+<script src="/app.js" defer></script></body></html>
