@@ -41,5 +41,3 @@ PATCH incidents: status, assignee. PATCH cameras: только status.
 - tests/api.test.js: повторяемые тесты.
 - postman: коллекция Postman.
 - docs: Product Brief, истории и теория.
-
-Ограничения: без production authentication, NVR, реальных MQTT-подписок и промышленной БД. Студент: Абиталипов Санжар Русланбекович, КС-2-24, ПК МУКР, Бишкек, 2026.
