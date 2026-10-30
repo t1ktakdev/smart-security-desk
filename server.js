@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 const express = require("express");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -129,6 +129,7 @@ app.patch("/api/incidents/:id", (req, res) => {
   const err = validateFields(req.body, ["status", "assignee"]);
   if (err) return bad(res, err);
   const { status, assignee } = req.body;
+  if (!STATUSES.includes(incident.status)) return bad(res, "Stored incident status invalid");
   if (status !== undefined && !enumField(status, STATUSES)) return bad(res, "Invalid incident status");
   if (assignee !== undefined && assignee !== null && !textField(assignee, 80)) return bad(res, "Invalid assignee");
   if (status !== undefined && status !== incident.status) {
@@ -154,3 +155,4 @@ if (require.main === module) {
   app.listen(PORT, "127.0.0.1", () => console.log("Smart Security Desk: http://localhost:" + PORT));
 }
 module.exports = { app, loadDB, saveDB };
+
